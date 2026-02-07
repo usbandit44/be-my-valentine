@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 
 const SOUND_URL = "./public/Hecha Pa' Mí - Grupo Frontera.mp3"
 
@@ -122,27 +122,21 @@ const Fireworks: React.FC = () => {
   }
 
   useEffect(() => {
-    // Start audio and fireworks on mount
-    audioRef.current?.play().catch(() => {
-      // Autoplay might be blocked, handle gracefully
-      console.log('Autoplay blocked or failed.')
-    })
+    // Make audio loop indefinitely
+    if (audioRef.current) {
+      audioRef.current.loop = true
+      audioRef.current.play().catch(() => {
+        console.log('Autoplay blocked or failed.')
+      })
+    }
 
     startFireworks()
 
-    // Stop fireworks and audio after 30 seconds
-    const timeoutId = setTimeout(() => {
-      if (animationFrameIdRef.current)
-        cancelAnimationFrame(animationFrameIdRef.current)
-      audioRef.current?.pause()
-    }, 30000)
-
     // Cleanup on unmount
     return () => {
-      clearTimeout(timeoutId)
       if (animationFrameIdRef.current)
         cancelAnimationFrame(animationFrameIdRef.current)
-      audioRef.current?.pause()
+      if (audioRef.current) audioRef.current.pause()
     }
   }, [])
 
@@ -167,7 +161,7 @@ const Fireworks: React.FC = () => {
           padding: '1rem 2rem',
           fontSize: '1.2rem',
           zIndex: 1,
-          pointerEvents: 'none', // disable button interaction since it's auto start
+          pointerEvents: 'none',
           opacity: 0.5,
         }}
         disabled
