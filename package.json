@@ -9,11 +9,8 @@
     "format": "prettier",
     "check": "prettier --write . && eslint --fix",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "deploy": "gh-pages -d dist",
+    "build": "vite build"
   },
   "homepage": "https://usbandit44.github.io/be-my-valentine",
   "dependencies": {
